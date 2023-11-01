@@ -1,5 +1,7 @@
 \documentclass{article}
 \usepackage{enumerate}
+\usepackage{tikz}
+\usetikzlibrary{graphs} 
 \title{Hamiltonian Cycles in Square Lattice Subgraphs}
 \begin{document}
 \date{\vspace{-5ex}}
@@ -10,7 +12,12 @@ This paper identifies a certain visual property of boundaries of right-angled wa
 
 \section{Definitions}
 \begin{enumerate}[I.]
-\item We define a graph as a set $G=\lbrace V,E \rbrace$. $V$ is the set of vertices. $E$ is the set of edges. For an edge $e\in E, V_{x},V_{y}\in V, e=\lbrace V_{x},V_{y} \rbrace $ A graph can be represented by a drawing, as can be seen in the following diagram.
+\item We define a graph as a set $G=\lbrace V,E \rbrace$. $V$ is the set of vertices. $E$ is the set of edges. For an edge $e\in E, $ where $ V_{x},V_{y}\in V, e=\lbrace V_{x},V_{y} \rbrace $, means there is a connection between vertices $V_{x}$ and $V_{y}$. A graph can be represented by a drawing. For the example graph $G=\lbrace E,V \rbrace$, where $E=\lbrace a,b,c,d \rbrace $ and $ V=\{\{a,b\},\{b,c\},\{c,d\},\{d,a\},\{a,c\},\{d,b\}\}$ we can draw the following diagram.
+\begin{figure}[h]
+\centering
+\begin{tikzpicture} \graph[nodes={draw,circle}] {{a,b}<->{c,d},{a,c}<->{d,b},{a,c}<->{b,d}}; \end{tikzpicture}
+\caption{A graph of four vertices that are all bidirectionally connected to each other.}
+\end{figure}
 \item We define a lattice graph as a graph L in which ...
 \end{enumerate}
 \end{document}
