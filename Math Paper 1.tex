@@ -1,56 +1,67 @@
-\documentclass{article}
+\documentclass[a4paper,12pt]{article}
+\usepackage[margin=1in]{geometry}
 \usepackage{enumerate}
 \usepackage{tikz}
+\usepackage{subcaption}
 \usepackage{float}
 \usepackage[bottom]{footmisc}
 \usepackage{hyperref}
 \usepackage{amsfonts}
 \usepackage{graphicx}
+\usepackage[backend=biber,style=mla,sorting=ynt]{biblatex}
+\addbibresource{citations.bib}
+\newtheorem{lemma}{Lemma}
+\newtheorem{sublemma}{Lemma}[lemma]
+\newtheorem{theorem}{Theorem}
 
 \usetikzlibrary{graphs} 
 \usetikzlibrary{graphdrawing}
 \usetikzlibrary{graphs.standard}
 \usetikzlibrary{positioning}
 \usegdlibrary{layered,circular,force}
-\title{Hamiltonian Cycles in Square Lattice Subgraphs}
+\title{Hamiltonian Cycles in Square Lattice Graphs}
 \begin{document}
 \date{\vspace{-5ex}}
 \maketitle
 
 \section{Abstract}
-This paper identifies a certain visual property of boundaries of right-angled walls, found in the video game Pacman, where corners are rounded and walls are straight and clamped in alignment with the normal of the path which they face. The walls form a closed boundary. The 2-dimensional gridded nature of wall placement allows them to be represented using a square lattice graph. With the aim of finding the direction towards which they are clamped, so as to recreate the visual properties of the walls in Pacman, we devise a polynomial-complexity algorithm for finding a hamiltonian cycle in square-lattice subgraphs, and establish the criteria for its devisability.
+This paper identifies a visual property of boundaries of right-angled walls, found in the video game Pacman, where corners are rounded and walls are straight and clamped in alignment with the normal of the path which they face. The walls form a closed boundary. The 2-dimensional gridded nature of wall placement allows them to be represented using a square lattice graph. With the aim of finding the direction towards which they are clamped, so as to recreate the visual properties of the walls in Pacman, we devise a polynomial-complexity algorithm for finding a hamiltonian cycle in square-lattice subgraphs, and establish the criteria for its devisability.
 
 \section{Problem Introduction}
-Pacman is a video game which utilizes textures of 8x8 pixels to render its core components as can be seen in Figure 1. 
+Pacman is a video game which utilizes textures of 8x8 pixels to render its core components as can be seen in Figure~\ref{PacmanLevelGrid}. 
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.4\linewidth]{Image-1.jpg}
-\caption [Pacman level divided into squares of 8x8 pixels.]{Pittman, Jamey. Tiles. 2023, Gamedeveloper.com.}
-\label{Pacman Level Grid}
+\caption {Pacman level divided into squares of 8x8 pixels.\autocite{pittman_pac-man_2009}}\label{PacmanLevelGrid}
 \end{figure}
 
-Since the pixel length of a wall is 1 pixel, the wall textures all contain an asymmetry as seen in Figure 2 and 3.
+Since the pixel length of a wall is 1 pixel, the wall textures all contain an asymmetry as seen in Figure~\ref{StraightWallTexture} and~\ref{CornerTexture}.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.5\linewidth]{Image-2.png}\hfill
-\caption {A single wall square texture.}
-\label{Straight wall texture}
+\includegraphics[width=0.4\linewidth]{Image-2.png}
+\caption {A single wall square texture.}\label{StraightWallTexture}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.5\linewidth]{Image-3.png}\hfill
-\caption {Square texture of corner.}\label{fig:CornerTexture}
+\includegraphics[width=0.4\linewidth]{Image-3.png}
+\caption {Square texture of corner.}\label{CornerTexture}
 \end{figure}
 
-Because of this asymmetry, it must be decided in what direction walls are clamped to ensure visual consistency. When all walls are clamped in the same direction we receive unsatisfactory results as seen in Figure ~\ref{Wall Texture Asymmetry}.
+Because of this asymmetry, it must be decided in what direction walls are clamped to ensure visual consistency. When all walls are clamped in the same direction we receive unsatisfactory results as seen in Figure~\ref{WallTextureAsymmetry}.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.5\linewidth]{Image-4.png}
-\caption {Left - Incorrect orientation of tiles. Right - Correct orientation with walls clamped to appropriate direction.}\label{Wall Texture Asymmetry}
+\includegraphics[width=0.4\linewidth]{Image-4.png}
+\caption {Left - Incorrect orientation of tiles. Right - Correct orientation with walls clamped to appropriate direction.}\label{WallTextureAsymmetry}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{Image-5.png}
+\caption {The aim of the algorithm devised through this paper is to be able to convert from the image on the left to the one on the right.}\label{LevelWallConversion}
 \end{figure}
 
 This problem will be reduced to the basic elements of graph theory.
@@ -58,7 +69,7 @@ This problem will be reduced to the basic elements of graph theory.
 \section{Definitions}
 
 \begin{enumerate}[I.]
-\item We define a graph as a set $G=\lbrace V,E \rbrace$. $V$ is a set of vertices. $E$ is a set of edges. Vertices can be thought of as standalone points. Edges are connections between vertices, where an edge $e\in E, $ for $ V_{x},V_{y}\in V, e=\lbrace V_{x},V_{y} \rbrace $, connects vertices $V_{x}$ and $V_{y}$.  A graph can be represented by a drawing. For the example graph $G=\lbrace E,V \rbrace$, where $E=\lbrace a,b,c,d \rbrace $ and $ V=\{\{a,b\},\{b,c\},\{c,d\},\{d,a\}\}$ we can draw the following diagram.
+\item We define a \textit{\textbf{graph}} as a set $G=(V,E)$.\footnote{\autocite{p._bogart_introductory_2000} p. 201.} $V$ is a set of vertices. $E$ is a set of edges. Vertices can be thought of as standalone points. Edges are connections between vertices, where an edge $e\in E, $ for $ V_{x},V_{y}\in V, e=\lbrace V_{x},V_{y} \rbrace $, connects vertices $V_{x}$ and $V_{y}$.  A graph can be represented by a drawing. For the example graph $G=(E,V)$, where $E=\lbrace a,b,c,d \rbrace $ and $ V=\{\{a,b\},\{b,c\},\{c,d\},\{a,d\}\}$ we can draw the following diagram.
 
 \begin{figure}[H]
 	\centering
@@ -66,7 +77,7 @@ This problem will be reduced to the basic elements of graph theory.
 		\graph [simple necklace layout, node distance=2cm] {
 			a--b--c--d--a
 	};
-	\caption{A graph of four vertices that are all bidirectionally connected to each other.}
+	\caption{A graph of four vertices that are joined together in a loop.}\label{NecklaceGraph}
 \end{figure}
 
 Here are several other examples of graphs (these are not essential to the paper, but can give a broader idea of what a graph can be):
@@ -74,22 +85,24 @@ Here are several other examples of graphs (these are not essential to the paper,
 \begin{figure}[H]
 	\centering
 	\tikz [every node/.style={draw,circle}] \graph {a--b--c--d};
-	\caption{A "spine" graph.}
+	\caption{A "spine" graph.}\label{SpineGraph}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
 	\tikz [every node/.style={draw,circle}] \graph { subgraph K_n [n=6, clockwise] };
-	\caption { A complete graph. }
+	\caption { A complete graph. }\label{CompleteGraph}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
 	\tikz [every node/.style={draw,circle}] \graph { a -> {b, c} -> d };
-	\caption {A directed graph. Each edge is assigned a direction indicated by the arrows.}
+	\caption {A directed graph. Each edge is assigned a direction indicated by the arrows.}\label{DirectedGraph}
 \end{figure}
 
-\item A \textit{\textbf{walk}} for a graph $G=\{V,E\}$ is an alternating sequence of vertices in $V$ and edges in $E$.\footnote{P. Bogart, Kenneth. Introductory Combinatorics. San Diego CA, Academic Press, 2000. p. 204.} It has the form ${v_1}{e_1}{v_2}{e_2}{v_3}{e_3}...{e_{n-1}}{v_n}$, where $e_k\in E,v_l\in V, 1\leq k\leq n-1, 1\leq l\leq n$. A walk in which only the first and last vertices are equal, is called a \textit{\textbf{cycle}}.\footnote{P. Bogart. p. 204} The following diagrams are examples of walks:
+\item We define the \textit{\textbf{degree}} of a vertex $v\in V, d(v)$ as the number of edges $e\in E$ that connect to $v$, for graph $G=(V,E)$.\footnote{\autocite{p._bogart_introductory_2000} p. 205.} In Figure~\ref{CompleteGraph}, all vertices have the same degree as they are all connected to 5 vertices, respectively, where as in Figure~\ref{SpineGraph}, vertex $b$ has a degree $d(b)=2$, whilst $a$ has a degree $d(a)=1$. 
+
+\item A \textit{\textbf{walk}} for a graph $G=(V,E)$ is an alternating sequence of vertices in $V$ and edges in $E$.\footnote{\autocite{p._bogart_introductory_2000} p. 204.} It has the form ${v_1}{e_1}{v_2}{e_2}{v_3}{e_3}...{e_{n-1}}{v_n}$, where $e_k\in E,v_l\in V, 1\leq k\leq n-1, 1\leq l\leq n$, and $e_k$ is an edge between $v_k$ and $v_{k+1}$. A walk in which only the first and last vertices are equal, is called a \textit{\textbf{cycle}}.\footnote{\autocite{p._bogart_introductory_2000} p. 204} The following diagrams are examples of walks:
 
 \begin{figure}[H]
 	\centering
@@ -97,7 +110,7 @@ Here are several other examples of graphs (these are not essential to the paper,
 		 subgraph K_n [n=6, clockwise];
  		 {[edges={red,thick}] 1 ->  2 -> 5 -> 3 -> 4 -> 6}
 	};
-	\caption {A path with vertices 1,2,5,3,4,6, and the respective edges to join them}
+	\caption {A path with vertices 1,2,5,3,4,6, and the respective edges to join them.}\label{FiniteWalk}
 \end{figure}
 
 \begin{figure}[H]
@@ -107,23 +120,101 @@ Here are several other examples of graphs (these are not essential to the paper,
 
 		{[edges={red,thick}] 1 -> 2 -> 3 -> 6 -> 5 -> 8 -> 7 -> 4 -> 1}
 	};
-	\caption {A path with vertices 1,2,3,6,5,8,7,4,1. The walk comes back to the first vertex through a string of unique vertices and is thus a cycle.}
+	\caption {A path with vertices 1,2,3,6,5,8,7,4,1. The walk comes back to the first vertex through a string of unique vertices and is thus a cycle.}\label{CycleWalk}
 \end{figure}
 
-\item A \textit{\textbf{Hamiltonian cycle}} for a graph $G=\{V,E\}$ is a cycle containing every vertex $v\in V$.\footnote{P. Bogart. p. 210} Since it is a cycle, it comes back to the first vertex of the walk, but, by definition, does not walk onto the any other vertex on more than one occasion. The following is an example of a hamiltonian cycle:
+\item A \textit{\textbf{Hamiltonian cycle}} for a graph $G=(V,E)$ is a cycle containing every vertex $v\in V$.\footnote{\autocite{p._bogart_introductory_2000} p. 210} Since it is a cycle, it comes back to the first vertex of the walk, but, by definition, does not walk onto the any other vertex on more than one occasion. The following is an example of a hamiltonian cycle:
 
 \begin{figure}[H]
 	\centering
-	\tikz [every node/.style={draw,circle}] \graph [grid placement] { 
+	\tikz [every node/.style={draw,circle}] \graph [grid placement, grow down=1.5cm, branch right=1.5cm, ] { 
 		subgraph Grid_n [n=36];
 		{[edges={red,line width=2pt}] 1 -> 2 -> 3 -> 9 -> 15 -> 16 -> 10 -> 4 -> 5 -> 6 -> 12 -> 11 -> 17 -> 18 -> 24 -> 23 -> 29 -> 30 -> 36 -> 35 -> 34 -> 28 -> 22 -> 21 -> 27 -> 33 -> 32 -> 31 -> 25 -> 26 -> 20 -> 19 -> 13 -> 14 -> 8 -> 7 -> 1}
 	};
-	\caption {A Hamiltonian cycle. Although it does not include every edge, it includes each vertex exactly once, before arriving at the starting vertex (Note that the starting vertex is abritrary as it is a loop; any vertex can be considered the starting vertex).}
+	\caption {A Hamiltonian cycle. Although it does not include every edge, it includes each vertex exactly once, before arriving at the starting vertex (Note that the starting vertex is abritrary as the path is a loop; any vertex can be considered the starting vertex).}\label{HamiltonianCycle}
 \end{figure}
 
-\item A square lattice graph $G=\{V,E\}$ is a graph in which each vertex can be distinctly mapped onto an integer tuple $(x,y)$, where $x,y\in \mathbb{Z}$, and where the edges of a vertex $v\in V$ only connect to the respective vertices of a distance of 1 in each cardinal direction. Essentially, a square lattice graph is a graph created out of some points on a coordinate grid, that for a coordinate $(x,y)$ are only ever connected by edges to coordinates with coordinate points $(x+1,y), (x-1,y), (x,y+1)$, or $(x,y-1)$. Figure  5, 6, 8, 10 and 11 are all examples of square lattice graphs.
+\item A \textit{\textbf{square lattice}} graph $G=(V,E)$ is a graph in which each vertex can be distinctly mapped onto an integer tuple $(x,y)$, where $x,y\in \mathbb{Z}$, and where the edges of a vertex $v\in V$ only connect to the respective vertices of a distance of 1 in each cardinal direction. Essentially, a square lattice graph is a graph created out of some points on a coordinate grid, that for a coordinate $(x,y)$ are only ever connected by edges to coordinates with coordinate points $(x+1,y), (x-1,y), (x,y+1)$, or $(x,y-1)$. Figures~\ref{NecklaceGraph},~\ref{SpineGraph},~\ref{CycleWalk}, and~\ref{HamiltonianCycle} are all examples of square lattice graphs.
 
 \end{enumerate}
 
-\section{First Approach}
+\section{Observations}
+\begin{enumerate}[I.]
+\item Firstly, we observe that walls are oriented away from the path they face as can be seen in Figure~\ref{PathNormal}. The walls are clamped opposite to the normal of the direction of the path. This shows how the walls are visually "molded". Thus the problem reduces to finding the normal of the path adjacent to a wall square.  
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\linewidth]{Image-6.png}
+	\caption {Arrows show the normal to the path that surrounds the boundary formed by the walls.} \label{PathNormal}
+\end{figure}
+
+\item To find the normal to the direction of the path around the walls, we must first know the direction of the path adjacent to each wall square. Since the walls, forming the boundary, define the path that surrounds, as they serve as an outline of it, we must find the closed path which the walls themselves form.\label{ClosedPathObservation}
+
+\item Since the walls each represent a single square in a rectangular 2D grid of integer coordinates, we can map them onto a square lattice graph as can be seen in Subfigure~\ref{BoundaryLattice}.\label{SquareLatticeObservation}
+
+\begin{figure}[H]
+	\begin{subfigure}[b]{0.5\textwidth}
+		\centering
+		\includegraphics[width=0.7\linewidth]{Image-7.png}
+		\caption {Pixel representation of a boundary formed by walls.}\label{PixelBoundary}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\centering
+		\tikz[every node/.style={draw,circle}] \graph [no placement] {
+			a [x=0,y=3] -- b [x=1,y=3] -- c[x=2,y=3] -- d[x=3,y=3] -- e[x=4,y=3] -- f[x=5,y=3] -- g[x=5,y=2] -- h[x=4,y=2] -- i[x=3,y=2] -- j[x=3,y=1] -- k[x=3,y=0] -- l[x=2,y=0] -- m[x=2,y=1] -- n[x=2,y=2] -- o[x=1,y=2] -- p[x=0,y=2] -- a;
+			b -- o;
+			c -- n;
+			d -- i;
+			e -- h;
+			n -- i;
+			m -- j;
+		};
+		\caption {Corresponding lattice graph of the wall configuration in~\ref{PixelBoundary}}\label{BoundaryLattice}
+	\end{subfigure}
+	\caption {Two representations of graph boundaries.}
+\end{figure}
+
+\item We can find a Hamiltonian cycle of the square lattice of the walls of a Pacman level to find the path defining its boundary to solve the problem, accounting for observations~\ref{ClosedPathObservation} and~\ref{SquareLatticeObservation}.
+
+\begin{figure}[H]
+	\centering
+	\tikz[every node/.style={draw,circle}] \graph [no placement] {
+		a [x=0,y=3] -> b [x=1,y=3] -> c[x=2,y=3] -> d[x=3,y=3] -> e[x=4,y=3] -> f[x=5,y=3] -> g[x=5,y=2] -> h[x=4,y=2] -> i[x=3,y=2] -> j[x=3,y=1] -> k[x=3,y=0] -> l[x=2,y=0] -> m[x=2,y=1] -> n[x=2,y=2] -> o[x=1,y=2] -> p[x=0,y=2] -> a;
+		b -- o;
+		c -- n;
+		d -- i;
+		e -- h;
+		n -- i;
+		m -- j;
+		{[edges={red,line width=2pt}] a->b->c->d->e->f->g->h->i->j->k->l->m->n->o->p->a}
+	};
+	\caption {Desired Hamiltonian cycle for lattice graph in Figure~\ref{BoundaryLattice}}\label{HamiltonianBoundaryLattice}
+\end{figure}
+
+\end{enumerate}
+
+\section{Properties of Square Lattice Graphs}
+\begin{theorem}
+Every vertex $v\in V$ of a square lattice graph $G=(V,E)$ representing a closed boundary, must have a degree $d(v)\geq 2$.\label{DegreeLemma}
+\end{theorem}
+\subsubsection*{Proof of Theorem~\ref{DegreeLemma}}
+If a vertex $v\in V$ has degree $d(v)=0$, and the number of vertices $\in V$, $n>1$, then that vertex cannot connect to any other vertices in the square lattice graph, and can thus not form part of the closed boundary. If a vertex $v_0\in V$ has degree $d(v_0)=1$, then any path $p$ where $v\in p$, will not be a Hamiltonian cycle, as the edge $e\in E$ where $v_0\in e$, can only be crossed once, as the adjacent vertex $v_1\in e$, can only be crossed once on path $p$.
+\begin{theorem}
+In a square lattice graph of a closed boundary wall configuration, in relation to the vertices' grid coordinates, out of the northernmost vertices, the westmost vertex will always be a corner connecting two vertices to its east and its south, respectively.\label{NorthwestCornerLemma}
+\end{theorem}
+\subsubsection*{Proof of Theorem~\ref{NorthwestCornerLemma}}
+In such a lattice graph, we pick the westmost vertex amongst the northernmost vertices. If there is a vertex connected to it, to its north, then our chosen vertex was not the northernmost vertex which is a contradiction. If there is a vertex connected to its west, then it is not the westmost vertex and is again a contradiction. 
+\begin{theorem}
+A square lattice graph of a closed boundary wall configuration will always have at least 4 corner vertices, each connecting to two vertices, and each pointing into different cardinal directions.\label{FourCornerLemma}
+\end{theorem}
+\subsubsection*{Proof of Theorem~\ref{FourCornerLemma}}
+TBW
+\section{First Algorithmic Approach}
+Short description...
+\begin{enumerate}[1.]
+\item Set $x\gets x_0, y\gets y_0$, of the coordinates $x_0,y_0$ of the westmost vertex of the northernmost vertices of graph $G$.
+\end{enumerate}
+\pagebreak
+\nocite{*}
+\printbibliography
+
 \end{document}

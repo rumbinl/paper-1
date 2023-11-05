@@ -3,4 +3,8 @@
 *.gz
 *.pdf
 *.out
+*.blg
+*.bbl
+*.bcf
+*.xml
 .DS_Store
