@@ -41,13 +41,13 @@ Since the pixel length of a wall is 1 pixel, the wall textures all contain an as
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.4\linewidth]{Image-2.png}
-\caption {A single wall square texture.}\label{StraightWallTexture}
+\caption {A single wall square texture.\autocite{myself}}\label{StraightWallTexture}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.4\linewidth]{Image-3.png}
-\caption {Square texture of corner.}\label{CornerTexture}
+\caption {Square texture of corner.\autocite{myself}}\label{CornerTexture}
 \end{figure}
 
 Because of this asymmetry, it must be decided in what direction walls are clamped to ensure visual consistency. When all walls are clamped in the same direction we receive unsatisfactory results as seen in Figure~\ref{WallTextureAsymmetry}.
@@ -55,13 +55,13 @@ Because of this asymmetry, it must be decided in what direction walls are clampe
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.4\linewidth]{Image-4.png}
-\caption {Left - Incorrect orientation of tiles. Right - Correct orientation with walls clamped to appropriate direction.}\label{WallTextureAsymmetry}
+\caption {Left - Incorrect orientation of tiles. Right - Correct orientation with walls clamped to appropriate direction.\autocite{myself}}\label{WallTextureAsymmetry}
 \end{figure}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\linewidth]{Image-5.png}
-\caption {The aim of the algorithm devised through this paper is to be able to convert from the image on the left to the one on the right.}\label{LevelWallConversion}
+\caption {The aim of the algorithm devised through this paper is to be able to convert from the image on the left to the one on the right.\autocite{myself}}\label{LevelWallConversion}
 \end{figure}
 
 This problem will be reduced to the basic elements of graph theory.
@@ -77,7 +77,7 @@ This problem will be reduced to the basic elements of graph theory.
 		\graph [simple necklace layout, node distance=2cm] {
 			a--b--c--d--a
 	};
-	\caption{A graph of four vertices that are joined together in a loop.}\label{NecklaceGraph}
+	\caption{A graph of four vertices that are joined together in a loop.\autocite{myself}}\label{NecklaceGraph}
 \end{figure}
 
 Here are several other examples of graphs (these are not essential to the paper, but can give a broader idea of what a graph can be):
@@ -85,19 +85,19 @@ Here are several other examples of graphs (these are not essential to the paper,
 \begin{figure}[H]
 	\centering
 	\tikz [every node/.style={draw,circle}] \graph {a--b--c--d};
-	\caption{A "spine" graph.}\label{SpineGraph}
+	\caption{A "spine". \autocite{myself}}\label{SpineGraph}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
 	\tikz [every node/.style={draw,circle}] \graph { subgraph K_n [n=6, clockwise] };
-	\caption { A complete graph. }\label{CompleteGraph}
+	\caption { A complete graph. \autocite{myself}}\label{CompleteGraph}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
 	\tikz [every node/.style={draw,circle}] \graph { a -> {b, c} -> d };
-	\caption {A directed graph. Each edge is assigned a direction indicated by the arrows.}\label{DirectedGraph}
+	\caption {A directed graph. Each edge is assigned a direction indicated by the arrows.\autocite{myself}}\label{DirectedGraph}
 \end{figure}
 
 \item We define the \textit{\textbf{degree}} of a vertex $v\in V, d(v)$ as the number of edges $e\in E$ that connect to $v$, for graph $G=(V,E)$.\footnote{\autocite{p._bogart_introductory_2000} p. 205.} In Figure~\ref{CompleteGraph}, all vertices have the same degree as they are all connected to 5 vertices, respectively, where as in Figure~\ref{SpineGraph}, vertex $b$ has a degree $d(b)=2$, whilst $a$ has a degree $d(a)=1$. 
@@ -110,7 +110,7 @@ Here are several other examples of graphs (these are not essential to the paper,
 		 subgraph K_n [n=6, clockwise];
  		 {[edges={red,thick}] 1 ->  2 -> 5 -> 3 -> 4 -> 6}
 	};
-	\caption {A path with vertices 1,2,5,3,4,6, and the respective edges to join them.}\label{FiniteWalk}
+	\caption {A path with vertices 1,2,5,3,4,6, and the respective edges to join them.\autocite{myself}}\label{FiniteWalk}
 \end{figure}
 
 \begin{figure}[H]
@@ -120,7 +120,7 @@ Here are several other examples of graphs (these are not essential to the paper,
 
 		{[edges={red,thick}] 1 -> 2 -> 3 -> 6 -> 5 -> 8 -> 7 -> 4 -> 1}
 	};
-	\caption {A path with vertices 1,2,3,6,5,8,7,4,1. The walk comes back to the first vertex through a string of unique vertices and is thus a cycle.}\label{CycleWalk}
+	\caption {A path with vertices 1,2,3,6,5,8,7,4,1. The walk comes back to the first vertex through a string of unique vertices and is thus a cycle.\autocite{myself}}\label{CycleWalk}
 \end{figure}
 
 \item A \textit{\textbf{Hamiltonian cycle}} for a graph $G=(V,E)$ is a cycle containing every vertex $v\in V$.\footnote{\autocite{p._bogart_introductory_2000} p. 210} Since it is a cycle, it comes back to the first vertex of the walk, but, by definition, does not walk onto the any other vertex on more than one occasion. The following is an example of a hamiltonian cycle:
@@ -131,7 +131,7 @@ Here are several other examples of graphs (these are not essential to the paper,
 		subgraph Grid_n [n=36];
 		{[edges={red,line width=2pt}] 1 -> 2 -> 3 -> 9 -> 15 -> 16 -> 10 -> 4 -> 5 -> 6 -> 12 -> 11 -> 17 -> 18 -> 24 -> 23 -> 29 -> 30 -> 36 -> 35 -> 34 -> 28 -> 22 -> 21 -> 27 -> 33 -> 32 -> 31 -> 25 -> 26 -> 20 -> 19 -> 13 -> 14 -> 8 -> 7 -> 1}
 	};
-	\caption {A Hamiltonian cycle. Although it does not include every edge, it includes each vertex exactly once, before arriving at the starting vertex (Note that the starting vertex is abritrary as the path is a loop; any vertex can be considered the starting vertex).}\label{HamiltonianCycle}
+	\caption {A Hamiltonian cycle. Although it does not include every edge, it includes each vertex exactly once, before arriving at the starting vertex (Note that the starting vertex is abritrary as the path is a loop; any vertex can be considered the starting vertex).\autocite{myself}}\label{HamiltonianCycle}
 \end{figure}
 
 \item A \textit{\textbf{square lattice}} graph $G=(V,E)$ is a graph in which each vertex can be distinctly mapped onto an integer tuple $(x,y)$, where $x,y\in \mathbb{Z}$, and where the edges of a vertex $v\in V$ only connect to the respective vertices of a distance of 1 in each cardinal direction. Essentially, a square lattice graph is a graph created out of some points on a coordinate grid, that for a coordinate $(x,y)$ are only ever connected by edges to coordinates with coordinate points $(x+1,y), (x-1,y), (x,y+1)$, or $(x,y-1)$. Figures~\ref{NecklaceGraph},~\ref{SpineGraph},~\ref{CycleWalk}, and~\ref{HamiltonianCycle} are all examples of square lattice graphs.
@@ -144,7 +144,7 @@ Here are several other examples of graphs (these are not essential to the paper,
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.4\linewidth]{Image-6.png}
-	\caption {Arrows show the normal to the path that surrounds the boundary formed by the walls.} \label{PathNormal}
+	\caption {Arrows show the normal to the path that surrounds the boundary formed by the walls.\autocite{myself}} \label{PathNormal}
 \end{figure}
 
 \item To find the normal to the direction of the path around the walls, we must first know the direction of the path adjacent to each wall square. Since the walls, forming the boundary, define the path that surrounds, as they serve as an outline of it, we must find the closed path which the walls themselves form.\label{ClosedPathObservation}
@@ -155,7 +155,7 @@ Here are several other examples of graphs (these are not essential to the paper,
 	\begin{subfigure}[b]{0.5\textwidth}
 		\centering
 		\includegraphics[width=0.7\linewidth]{Image-7.png}
-		\caption {Pixel representation of a boundary formed by walls.}\label{PixelBoundary}
+		\caption {Pixel representation of a boundary formed by walls.\autocite{myself}}\label{PixelBoundary}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.5\textwidth}
 		\centering
@@ -168,7 +168,7 @@ Here are several other examples of graphs (these are not essential to the paper,
 			n -- i;
 			m -- j;
 		};
-		\caption {Corresponding lattice graph of the wall configuration in~\ref{PixelBoundary}}\label{BoundaryLattice}
+		\caption {Corresponding lattice graph of the wall configuration in~\ref{PixelBoundary}\autocite{myself}}\label{BoundaryLattice}
 	\end{subfigure}
 	\caption {Two representations of graph boundaries.}
 \end{figure}
@@ -207,7 +207,7 @@ In such a lattice graph, we pick the westmost vertex amongst the northernmost ve
 A square lattice graph of a closed boundary wall configuration will always have at least 4 corner vertices, each connecting to two vertices, and each pointing into different cardinal directions.\label{FourCornerLemma}
 \end{theorem}
 \subsubsection*{Proof of Theorem~\ref{FourCornerLemma}}
-TBW
+Following from theorem~\ref{NorthwestCornerLemma}, for square lattice with defines a boundary, there is one corner with an edge to its east and one to its south. 
 \section{First Algorithmic Approach}
 Short description...
 \begin{enumerate}[1.]
