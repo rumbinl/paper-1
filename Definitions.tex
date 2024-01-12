@@ -1,0 +1,71 @@
+\section{Definitions}
+
+\begin{enumerate}[I.]
+\item We define a \textit{\textbf{graph}} as a set $G=(V,E)$.\footnote{\autocite{p._bogart_introductory_2000} p. 201.} $V$ is a set of vertices. $E$ is a set of edges. Vertices can be thought of as standalone points. Edges are connections between vertices, where an edge $e\in E, $ for $ V_{x},V_{y}\in V, e=\lbrace V_{x},V_{y} \rbrace $, connects vertices $V_{x}$ and $V_{y}$.  A graph can be represented by a drawing. For the example graph $G=(E,V)$, where $E=\lbrace a,b,c,d \rbrace $ and $ V=\{\{a,b\},\{b,c\},\{c,d\},\{a,d\}\}$ we can draw the following diagram.
+
+\begin{figure}[H]
+	\centering
+	\tikz [every node/.style={draw,circle}]
+		\graph [simple necklace layout, node distance=2cm] {
+			a--b--c--d--a
+	};
+	\caption{A graph of four vertices that are joined together in a loop.\autocite{myself}}\label{NecklaceGraph}
+\end{figure}
+
+Here are several other examples of graphs (these are not essential to the paper, but can give a broader idea of what a graph can be):
+
+\begin{figure}[H]
+	\centering
+	\tikz [every node/.style={draw,circle}] \graph {a--b--c--d};
+	\caption{A "spine". \autocite{myself}}\label{SpineGraph}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\tikz [every node/.style={draw,circle}] \graph { subgraph K_n [n=6, clockwise] };
+	\caption { A complete graph. \autocite{myself}}\label{CompleteGraph}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\tikz [every node/.style={draw,circle}] \graph { a -> {b, c} -> d };
+	\caption {A directed graph. Each edge is assigned a direction indicated by the arrows.\autocite{myself}}\label{DirectedGraph}
+\end{figure}
+
+\item We define the \textit{\textbf{degree}} of a vertex $v\in V, d(v)$ as the number of edges $e\in E$ that connect to $v$, for graph $G=(V,E)$.\footnote{\autocite{p._bogart_introductory_2000} p. 205.} In Figure~\ref{CompleteGraph}, all vertices have the same degree as they are all connected to 5 vertices, respectively, where as in Figure~\ref{SpineGraph}, vertex $b$ has a degree $d(b)=2$, whilst $a$ has a degree $d(a)=1$. 
+
+\item A \textit{\textbf{walk}} for a graph $G=(V,E)$ is an alternating sequence of vertices in $V$ and edges in $E$.\footnote{\autocite{p._bogart_introductory_2000} p. 204.} It has the form ${v_1}{e_1}{v_2}{e_2}{v_3}{e_3}...{e_{n-1}}{v_n}$, where $e_k\in E,v_l\in V, 1\leq k\leq n-1, 1\leq l\leq n$, and $e_k$ is an edge between $v_k$ and $v_{k+1}$. A walk in which only the first and last vertices are equal, is called a \textit{\textbf{cycle}}.\footnote{\autocite{p._bogart_introductory_2000} p. 204} The following diagrams are examples of walks:
+
+\begin{figure}[H]
+	\centering
+	\tikz [every node/.style={draw,circle}] \graph [simple, grow right=2cm] {
+		 subgraph K_n [n=6, clockwise];
+ 		 {[edges={red,thick}] 1 ->  2 -> 5 -> 3 -> 4 -> 6}
+	};
+	\caption {A path with vertices 1,2,5,3,4,6, and the respective edges to join them.\autocite{myself}}\label{FiniteWalk}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\tikz [every node/.style={draw,circle}] \graph [grid placement] { 
+		subgraph Grid_n [n=9];
+
+		{[edges={red,thick}] 1 -> 2 -> 3 -> 6 -> 5 -> 8 -> 7 -> 4 -> 1}
+	};
+	\caption {A path with vertices 1,2,3,6,5,8,7,4,1. The walk comes back to the first vertex through a string of unique vertices and is thus a cycle.\autocite{myself}}\label{CycleWalk}
+\end{figure}
+
+\item A \textit{\textbf{Hamiltonian cycle}} for a graph $G=(V,E)$ is a cycle containing every vertex $v\in V$.\footnote{\autocite{p._bogart_introductory_2000} p. 210} Since it is a cycle, it comes back to the first vertex of the walk, but, by definition, does not walk onto the any other vertex on more than one occasion. The following is an example of a hamiltonian cycle:
+
+\begin{figure}[H]
+	\centering
+	\tikz [every node/.style={draw,circle}] \graph [grid placement, grow down=1.5cm, branch right=1.5cm, ] { 
+		subgraph Grid_n [n=36];
+		{[edges={red,line width=2pt}] 1 -> 2 -> 3 -> 9 -> 15 -> 16 -> 10 -> 4 -> 5 -> 6 -> 12 -> 11 -> 17 -> 18 -> 24 -> 23 -> 29 -> 30 -> 36 -> 35 -> 34 -> 28 -> 22 -> 21 -> 27 -> 33 -> 32 -> 31 -> 25 -> 26 -> 20 -> 19 -> 13 -> 14 -> 8 -> 7 -> 1}
+	};
+	\caption {A Hamiltonian cycle. Although it does not include every edge, it includes each vertex exactly once, before arriving at the starting vertex (Note that the starting vertex is abritrary as the path is a loop; any vertex can be considered the starting vertex).\autocite{myself}}\label{HamiltonianCycle}
+\end{figure}
+
+\item A \textit{\textbf{square lattice}} graph $G=(V,E)$ is a graph in which each vertex can be distinctly mapped onto an integer tuple $(x,y)$, where $x,y\in \mathbb{Z}$, and where the edges of a vertex $v\in V$ only connect to the respective vertices of a distance of 1 in each cardinal direction. Essentially, a square lattice graph is a graph created out of some points on a coordinate grid, that for a coordinate $(x,y)$ are only ever connected by edges to coordinates with coordinate points $(x+1,y), (x-1,y), (x,y+1)$, or $(x,y-1)$. Figures~\ref{NecklaceGraph},~\ref{SpineGraph},~\ref{CycleWalk}, and~\ref{HamiltonianCycle} are all examples of square lattice graphs.
+
+\end{enumerate}
