@@ -1,0 +1,6 @@
+\contentsline {section}{\numberline {1}Abstract}{2}{section.1}%
+\contentsline {section}{\numberline {2}Problem Introduction}{3}{section.2}%
+\contentsline {section}{\numberline {3}Definitions}{6}{section.3}%
+\contentsline {section}{\numberline {4}Observations}{9}{section.4}%
+\contentsline {section}{\numberline {5}Properties of Square Lattice Graphs}{11}{section.5}%
+\contentsline {section}{\numberline {6}First Algorithmic Approach}{13}{section.6}%
