@@ -1,13 +1,13 @@
 \section{Observations}
 \begin{enumerate}[I.]
-\item Firstly, we observe that walls are oriented away from the path they face as can be seen in Figure~\ref{PathNormal}. The walls are clamped opposite to the normal of the direction of the path. This shows how the walls are visually "molded". Thus the problem reduces to finding the normal of the path adjacent to a wall square.  
+\item Firstly, we observe that walls are oriented away from the path they face as can be seen in Figure~\ref{PathNormal}. The walls connect to neighbours, and non-corner walls face into the normal of the direction of the path. Because of the walls' asymmetry there are two different ways to face the path, one ''clamped'' towards and one away. Consistently clamping in the same direction establishes the visual conditions of the walls. Thus the problem reduces to finding normal of the wall square's adjacent path, and consistently clamping away in relation to it.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.4\linewidth]{Image-6.png}
 	\caption {Arrows show the normal to the path that surrounds the boundary formed by the walls.\autocite{myself}} \label{PathNormal}
 \end{figure}
 
-\item To find the normal to the direction of the path around the walls, we must first know the direction of the path adjacent to each wall square. Since the walls, forming the boundary, define the path that surrounds, as they serve as an outline of it, we must find the closed path which the walls themselves form.\label{ClosedPathObservation}
+\item To find the normal to the direction of the path around the walls, we must first know the direction of the path adjacent to each wall square. Since the walls, forming the boundary, define the path that surrounds, as they serve as an outline of it, we must find the closed path which the walls themselves form.\label{ClosedPathObservation} Instead of using the path adjacent to the walls as a rule of determining the tiles' orientation, we will use the tiles themselves in relation to each other, to trace their boundary thus finding the normal of that outline and solving the problem.
 
 \item Since the walls each represent a single square in a rectangular 2D grid of integer coordinates, we can map them onto a square lattice graph as can be seen in Subfigure~\ref{BoundaryLattice}.\label{SquareLatticeObservation}
 
