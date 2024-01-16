@@ -1,7 +1,7 @@
 \section{Definitions}
 
 \begin{enumerate}[I.]
-\item We define a \textit{\textbf{graph}} as a set $G=(V,E)$.\footnote{\autocite{p._bogart_introductory_2000} p. 201.} $V$ is a set of vertices. $E$ is a set of edges. Vertices can be thought of as standalone points. Edges are connections between vertices, where an edge $e\in E, $ for $ V_{x},V_{y}\in V, e=\lbrace V_{x},V_{y} \rbrace $, connects vertices $V_{x}$ and $V_{y}$.  A graph can be represented by a drawing. For the example graph $G=(E,V)$, where $E=\lbrace a,b,c,d \rbrace $ and $ V=\{\{a,b\},\{b,c\},\{c,d\},\{a,d\}\}$ we can draw the following diagram.
+\item We define a \textit{\textbf{graph}} as a set $G=(V,E)$.\footnote{\autocite{p._bogart_introductory_2000} p. 201.} $V$ is a set of vertices. $E$ is a set of edges. Vertices can be thought of as standalone points. Edges are connections between vertices, where an edge $e\in E, $ for $ V_{x},V_{y}\in V, e=\lbrace V_{x},V_{y} \rbrace $, connects vertices $V_{x}$ and $V_{y}$.  Intuitively a graph is a set of objects with some or no connections to each other. A graph can be represented by a drawing. For the example graph $G=(E,V)$, where $V=\lbrace a,b,c,d \rbrace $ and $ E=\{\{a,b\},\{b,c\},\{c,d\},\{a,d\}\}$ we can draw the following diagram.
 
 \begin{figure}[H]
 	\centering
@@ -23,7 +23,7 @@ Here are several other examples of graphs (these are not essential to the paper,
 \begin{figure}[H]
 	\centering
 	\tikz [every node/.style={draw,circle}] \graph { subgraph K_n [n=6, clockwise] };
-	\caption { A complete graph. \autocite{myself}}\label{CompleteGraph}
+	\caption { A complete graph. Complete because each node is connected to every other node, with exactly a single edge between any two nodes. \autocite{myself}}\label{CompleteGraph}
 \end{figure}
 
 \begin{figure}[H]
@@ -34,7 +34,8 @@ Here are several other examples of graphs (these are not essential to the paper,
 
 \item We define the \textit{\textbf{degree}} of a vertex $v\in V, d(v)$ as the number of edges $e\in E$ that connect to $v$, for graph $G=(V,E)$.\footnote{\autocite{p._bogart_introductory_2000} p. 205.} In Figure~\ref{CompleteGraph}, all vertices have the same degree as they are all connected to 5 vertices, respectively, where as in Figure~\ref{SpineGraph}, vertex $b$ has a degree $d(b)=2$, whilst $a$ has a degree $d(a)=1$. 
 
-\item A \textit{\textbf{walk}} for a graph $G=(V,E)$ is an alternating sequence of vertices in $V$ and edges in $E$.\footnote{\autocite{p._bogart_introductory_2000} p. 204.} It has the form ${v_1}{e_1}{v_2}{e_2}{v_3}{e_3}...{e_{n-1}}{v_n}$, where $e_k\in E,v_l\in V, 1\leq k\leq n-1, 1\leq l\leq n$, and $e_k$ is an edge between $v_k$ and $v_{k+1}$. A walk in which only the first and last vertices are equal, is called a \textit{\textbf{cycle}}.\footnote{\autocite{p._bogart_introductory_2000} p. 204} The following diagrams are examples of walks:
+\item A \textit{\textbf{walk}} for a graph $G=(V,E)$ is an alternating sequence of vertices in $V$ and edges in $E$.\footnote{\autocite{p._bogart_introductory_2000} p. 204.} It has the form ${v_1}{e_1}{v_2}{e_2}{v_3}{e_3}...{e_{n-1}}{v_n}$, where $e_k\in E,v_l\in V, 1\leq k\leq n-1, 1\leq l\leq n$, and $e_k$ is an edge between $v_k$ and $v_{k+1}$. A walk in which only the first and last vertices are equal, is called a \textit{\textbf{cycle}}.\footnote{\autocite{p._bogart_introductory_2000} p. 204}
+Intuitively a walk can be imagined as a literal walk moving between connected vertices. A cycle is simply a walk that results in a loop back to a previous vertex. The following diagrams are examples of walks:
 
 \begin{figure}[H]
 	\centering
@@ -66,6 +67,7 @@ Here are several other examples of graphs (these are not essential to the paper,
 	\caption {A Hamiltonian cycle. Although it does not include every edge, it includes each vertex exactly once, before arriving at the starting vertex (Note that the starting vertex is abritrary as the path is a loop; any vertex can be considered the starting vertex).\autocite{myself}}\label{HamiltonianCycle}
 \end{figure}
 
-\item A \textit{\textbf{square lattice}} graph $G=(V,E)$ is a graph in which each vertex can be distinctly mapped onto an integer tuple $(x,y)$, where $x,y\in \mathbb{Z}$, and where the edges of a vertex $v\in V$ only connect to the respective vertices of a distance of 1 in each cardinal direction. Essentially, a square lattice graph is a graph created out of some points on a coordinate grid, that for a coordinate $(x,y)$ are only ever connected by edges to coordinates with coordinate points $(x+1,y), (x-1,y), (x,y+1)$, or $(x,y-1)$. Figures~\ref{NecklaceGraph},~\ref{SpineGraph},~\ref{CycleWalk}, and~\ref{HamiltonianCycle} are all examples of square lattice graphs.
+\item A \textit{\textbf{square lattice}} graph $G=(V,E)$ is a graph in which each vertex can be distinctly mapped onto an integer tuple $(x,y)$, where $x,y\in \mathbb{Z}$, and where the edges of a vertex $v\in V$ only connect to the respective vertices of a distance of 1 in each cardinal direction. 
+Essentially, a square lattice graph is a graph created out of some points on a coordinate grid, where coordinate $(x,y)$ is connected by edges to at most coordinates $(x+1,y), (x-1,y), (x,y+1)$, or $(x,y-1)$. Figures~\ref{NecklaceGraph},~\ref{SpineGraph},~\ref{CycleWalk}, and~\ref{HamiltonianCycle} are all examples of square lattice graphs.
 
 \end{enumerate}
