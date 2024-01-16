@@ -7,4 +7,5 @@
 *.bbl
 *.bcf
 *.xml
+*.toc
 .DS_Store
