@@ -1,0 +1,20 @@
+\section{Extensions to Algorithm 1}
+\begin{enumerate}
+\item In order to extend for the first difference between the outer boundary and the inner boundaries, we must substitute for the assumption that there must always be a westmost vertex out of the northernmost verties connected only south and east. We must replace Lemma~\ref{NorthwestCornerLemma}. The corner vertex was needed in order to establish a reference point for the direction of walking, and of the normal. However, given that the plane is a curved surfaces that revolves both vertically and horizontally, the orientation of a tile such as the north-westernmost tile in Figure~\ref{ConnectedOuterBoundary}, is ambiguous, as it connects in all cardinal directions, not just to the east and south. This problem is reserved for future inquiry. 
+
+\item Also noted is that the $Normal(d)$ function which lies at the center of deciding in what direction our Hamiltonian cycle must go is in fact reversed for the outer boundary if we neglect the non-Euclidean geometry of Pac-Man and assume it to be a Euclidean plane. We assign the outer bound a darker color of blue in order to differentiate from the inner walls. Assuming that the outer boundary is fully connected we can restate algorithm 1 with a slight alteration, simply reversing the normal.
+\\We set IsOuterBoundary$(x,y)$ as true if the tile at $(x,y)$ is a tile flagged as outer boundary and false otherwise.
+\section{Algorithm 2}
+\begin{enumerate}[\bf 1.]
+\item Let $G_{x,y}$ be the direction to which the tile at $(x,y)$ points to. Set all $G_{x,y}=-1$ for $x,y \in \mathbb{Z}$
+\item Set $x\gets x_0, y\gets y_0$, of the coordinates $x_0,y_0$ of the westernmost vertex of the northernmost vertices of graph $G$. $currentDirection\gets 0$
+\item \label{loopBegin} Set $direction \gets Normal(currentDirection) \pmod{4}$
+\item if IsOuterBoundary$(x,y)$, $direction \gets Opposite(direction)$.
+\item \label{CoordinateSetting} $x'$ \gets ApplyDirectionX($x$, $direction$), $y'$ \gets ApplyDirectionY($y$, $direction$)
+\item if not TileAt($x'$,$y'$), go to step $\ref{loopUpdate}$
+\item Set $G_{x,y} = direction$, $x \gets x', y \gets y'$, $currentDirection \gets direction$.
+\item if $x=x_0$ and $y=y_0$, stop, else go to step $\ref{loopBegin}$.
+\item \label{loopUpdate} if IsOuterBoundary$(x,y)$, $direction\gets direction+3\pmod{4}$ else $direction \gets direction+1 \pmod{4}$
+\item if $direction = lastDirection$, stop, else go to step ~\ref{CoordinateSetting}.
+\end{enumerate}
+\end{enumerate}
